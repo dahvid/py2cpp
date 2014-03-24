@@ -5,4 +5,8 @@ use variadic templates instead.
 Dependency on boost python is only necessary for conversion to the easy-to-use boost python c++ emulation classes (list, tuple etc.) 
 If we were willing to do away with this we could do all the python conversions with the python c interface.
 
+Basicly there are two major projects here;
+
+1) Replace boost fusion with c++11
+2) Make it work with boost variants
 

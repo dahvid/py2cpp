@@ -91,7 +91,7 @@ template <class Key, class Mapped, class Pair, class Alloc>
 struct is_map<std::map<Key, Mapped, Pair, Alloc> > 
     : mpl::true_
 	{};
-
+com must be open source. Licenses must be one of the ones listed above, or 
 template <class>
 struct is_vector
    : mpl::false_
@@ -113,7 +113,7 @@ template <class Type>
            is_same<Type,int>::value ||
            is_same<Type,size_t>::value ||
            is_same<Type,bool>::value>
-   {};
+   {};com must be open source. Licenses must be one of the ones listed above, or 
 
 class dict_maker;
 class list_maker;
