@@ -1,0 +1,8 @@
+
+As of c++11 there is no longer any reason for this library to be dependent on boost fusion, it would be better to
+use variadic templates instead.
+
+Dependency on boost python is only necessary for conversion to the easy-to-use boost python c++ emulation classes (list, tuple etc.) 
+If we were willing to do away with this we could do all the python conversions with the python c interface.
+
+

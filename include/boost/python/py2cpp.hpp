@@ -115,9 +115,37 @@ template <class Type>
            is_same<Type,bool>::value>
    {};
 
-//class list_maker;
-//class tuple_maker;
-//class dict_maker;
+class dict_maker;
+class list_maker;
+class tuple_maker;
+
+template<class T, class U>
+dict make_dict_from_map(const std::map<T,U>& v)
+{
+    dict result;
+    std::for_each(v.begin(), v.end(), dict_maker(result));
+    return result;
+}
+
+
+
+template<class T>
+list make_list_from_vector(const std::vector<T>& v)
+{
+    list result;
+    std::for_each(v.begin(), v.end(), list_maker(result));
+    return result;
+}
+
+template <class Sequence>
+tuple make_tuple_from_fusion(const Sequence& s)
+{
+    tuple result((detail::new_reference)::PyTuple_New(fusion::size(s)));
+    fusion::for_each(s, tuple_maker(result));
+    return result;
+}
+
+
 
 
 class tuple_maker
@@ -316,6 +344,7 @@ auto build_type(const type_builder& builder) -> decltype(builder())
 	return val;
 }
 */
+
 
 
 class value_parser
@@ -663,34 +692,9 @@ private:
 };
 
 
-template<class T>
-list make_list_from_vector(const std::vector<T>& v)
-{
-    list result;
-    std::for_each(v.begin(), v.end(), list_maker(result));
-    return result;
-}
 
 
 
-template <class Sequence>
-tuple make_tuple_from_fusion(const Sequence& s)
-{
-    tuple result((detail::new_reference)::PyTuple_New(fusion::size(s)));
-    fusion::for_each(s, tuple_maker(result));
-    return result;
-}
-
-
-
-
-template<class T, class U>
-dict make_dict_from_map(const std::map<T,U>& v)
-{
-    dict result;
-    std::for_each(v.begin(), v.end(), dict_maker(result));
-    return result;
-}
 
 /**
         assumes all tuple members or of the same type
