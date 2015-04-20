@@ -174,8 +174,10 @@ int main(int argc, char* argv[])
 			//list l = make_list_from_vector(dd);
 			py::list l;
 			cpp_2_py(dd, &l);
+			
 
 			py_2_cpp(l, &ee);
+			
 			//make_vector_from_list(l, &ee);
 			if (dd != ee){
 				cerr << "bad two way vector list injection extraction 2" << endl;
@@ -186,6 +188,7 @@ int main(int argc, char* argv[])
 				string s = convertToString(l);
 				cout << "nested vector double conversion " << s << endl;
 			}
+			 
 			
 		}
 		{  //mixed like shit

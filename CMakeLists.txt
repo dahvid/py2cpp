@@ -14,9 +14,9 @@ IF (WIN32)
     #SET(CMAKE_C_FLAGS "/EHsc")
    # SET(WIN32 1)
 ELSEIF(APPLE)
-    SET(CMAKE_CXX_FLAGS "-fPIC  -std=c++0x -pthread -ldl")
+    SET(CMAKE_CXX_FLAGS "-fPIC  -std=c++11 -pthread -ldl")
 ELSE()
-    SET(CMAKE_CXX_FLAGS "-fPIC  -std=c++0x -pthread -ldl -lrt")
+    SET(CMAKE_CXX_FLAGS "-fPIC  -std=c++11 -pthread -ldl -lrt")
 ENDIF (WIN32)
 
 
@@ -27,7 +27,7 @@ set(EXECUTABLE_OUTPUT_PATH  ${CMAKE_SOURCE_DIR}/bin)
 set(PUBLIC_INCLUDES ${CMAKE_SOURCE_DIR}/include)
 
 
-message("Building cmake files for project directory.", ${CMAKE_SOURCE_DIR})
+message("Building cmake files for project directory." ${CMAKE_SOURCE_DIR})
 
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
