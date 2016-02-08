@@ -102,6 +102,16 @@ struct is_vector<std::vector<T> >
     : mpl::true_
 	{};
 
+template <class Type>
+   struct is_auto_python_convertable
+     : mpl::bool_<
+           is_same<Type,double>::value ||
+           is_same<Type,long>::value ||
+           is_same<Type,int>::value ||
+           is_same<Type,size_t>::value ||
+           is_same<Type,bool>::value
+           >
+   {};
 
 
 template <class Type>
@@ -849,6 +859,38 @@ inline std::string convertToString(object pyobject)
     return ret;
 }
 
+inline object evaluate(const string& code, object globals, object locals)
+{
+
+	checkedEntrance("evaluate");
+    str s = str(code);
+    object o = eval(s, globals, locals);
+    return o;
+}
+
+
+inline object evaluate(const string& code)
+{
+
+	checkedEntrance("evaluate");
+    object module(handle<>(borrowed(PyImport_AddModule("__main__"))));
+    object global = module.attr("__dict__");
+    str s = str(code);
+    object o = eval(s, global, global);
+    return o;
+}
+
+inline void eval_and_store(const string& variable, const string& code)
+{
+	checkedEntrance("eval_and_store");
+    object module(handle<>(borrowed(PyImport_ImportModule("__builtin__"))));
+    object global = module.attr("__dict__");
+    str s = str(code);
+    object o = eval(s, global, global);
+
+    global[variable] = o;
+
+ }
 
 
 //experiment for universal converter
@@ -894,6 +936,16 @@ protected:
 class cpp2py {
 public:
 
+    void operator() (const std::string& element, object* pyobject) const
+	   	    { *pyobject = str(element); }
+
+	//check if mapped type is automatically convertable from python
+	template <class T>
+		typename enable_if<typename is_auto_python_convertable<T>::type>::type
+	    	operator() (const T& element, object* pyobject) const
+	   	    { *pyobject = element; }
+
+
 	//check if mapped type is fusion tuple
 	template <class T>
 		typename enable_if<typename fusion::traits::is_sequence<T>::type>::type
@@ -912,11 +964,6 @@ public:
 	   	   operator() (const T& s, object* pyobject) const
 	   	   { *pyobject = make_dict_from_map(s); }
 
-	//check if mapped type is automatically convertable from python
-	template <class T>
-		typename enable_if<typename is_python_convertable<T>::type>::type
-	    	operator() (const T& element, object* pyobject) const
-	   	    { *pyobject = element; }
 
 };
 
