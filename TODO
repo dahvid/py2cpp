@@ -10,3 +10,4 @@ Basicly there are two major projects here;
 1) Replace boost fusion with c++11
 2) Make it work with boost variants
 
+make it work with c++11
